@@ -1,0 +1,24 @@
+input {
+  beats {
+    ## The port to listen on for filebeat connections.
+    port => 5044
+   # # The IP address to listen for filebeat connections.
+    host => "10.74.70.44"
+  }
+}
+filter {
+if [type] == "log"
+{
+grok {
+match => [
+"message","%{IPORHOST:ClientIP1} %{USER:Ident} %{USER:Auth} \[%{HTTPDATE:Timestamp}\] %{GREEDYDATA:Method} /%{NOTSPACE:RequestPage} %{GREEDYDATA:HttpVersion}\" %{NUMBER                                                                     :ServerResponse} %{NUMBER:Bytes} %{GREEDYDATA:Referrer}\" %{GREEDYDATA:Agent}"]
+}
+mutate {
+        convert => { "Bytes" => "integer" }
+        convert => { "ServerResponse" => "integer" }
+  }
+  if [message] =~ "^*Keep-Alive" { drop{} }
+}}
+output {
+  elasticsearch {
+  hosts => ["10.119.96.71:9200"] }}
