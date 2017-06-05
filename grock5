@@ -1,0 +1,42 @@
+input { stdin { } }
+#input {
+ # beats {
+    ## The port to listen on for filebeat connections.
+    #port => 5044
+   # # The IP address to listen for filebeat connections.
+  #  host => "10.74.70.44"
+ # }
+#}
+
+
+filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+
+}
+
+#output {
+ # logstash {
+  #  host => ["10.119.96.71:5044"]
+    #bulk_max_size: 1024
+#}}
+#output {
+##  elasticsearch {
+##    hosts => localhost
+##    manage_template => false
+##    index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+##    document_type => "%{[@metadata][type]}"
+##  }
+##}
+output {
+elasticsearch {
+host => "10.119.96.71"
+port => 9300
+manage_template => false
+index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+document_type => "%{[@metadata][type]}"
+}}
