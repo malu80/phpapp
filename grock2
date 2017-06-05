@@ -1,0 +1,25 @@
+input {
+  beats {
+    ## The port to listen on for filebeat connections.
+    port => 5045
+   # # The IP address to listen for filebeat connections.
+    host => "10.74.70.44"
+  } }
+
+filter {
+
+if [type] == "metricsets"
+
+{
+
+mutate {
+
+        convert => { "system*" => "integer"}
+
+} }}
+
+output {
+  elasticsearch {
+  hosts => ["10.119.96.71:9200"]
+  index => "metric-ram-%{+YYYY.MM.dd}" }
+}
