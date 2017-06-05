@@ -1,0 +1,7 @@
+LogFile=/tmp/zabbix_agentd.log
+EnableRemoteCommands=0
+LogRemoteCommands=0
+Server=10.170.33.104
+ServerActive=10.170.33.104
+Hostname=ip-10-74-70-44.ebiz.verizon.com
+EnableRemoteCommands=1
